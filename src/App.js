@@ -8,7 +8,12 @@ import DetailLigne from './DetailLigne';
 
 function App() {
   const [recherche, setRecherche] = useState("");
-  const [ligneSelectionnee, setLigneSelectionnee] = useState(null); // ← ajoute ça
+  const [ligneSelectionnee, setLigneSelectionnee] = useState(null); 
+  const [nbRecherches, setNbRecherches] = useState(0); 
+  function handleRecherche(valeur) {
+  setRecherche(valeur);
+  setNbRecherches(nb => nb + 1);
+}
 
   const lignes = [ 
   { id: 1, numero: "1", depart: "Parcelles Assainies",
@@ -57,8 +62,16 @@ function App() {
     <div className="App">
       <Header />
       <main className="contenu">
-        <Recherche valeur={recherche} onChange={setRecherche} />
+        <Recherche valeur={recherche} onChange={handleRecherche} />
+        <p className="compteur-recherche">
+  Vous avez effectué {nbRecherches} recherche{nbRecherches > 1 ? 's' : ''}
+</p>
         <p className="resultat-recherche">
+          {lignesFiltrees.length === 0 && (
+  <p className="aucun-resultat">
+    Aucune ligne trouvée pour "{recherche}"
+  </p>
+)}
           {lignesFiltrees.length} ligne{lignesFiltrees.length > 1 ? 's' : ''} trouvee{lignesFiltrees.length > 1 ? 's' : ''}
         </p>
        {lignesFiltrees.map(ligne => (
